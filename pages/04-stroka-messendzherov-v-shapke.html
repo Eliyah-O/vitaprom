@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<style>:root{color-scheme:light dark}body{margin:0;padding:0}</style>
+</head>
+<body>
+<title>Строка мессенджеров в шапке</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#EDEEF0;
+    --surface:#FFFFFF;
+    --surface-2:#F6F6F7;
+    --ink:#171A1E;
+    --ink-2:#4A4D53;
+    --muted:#7A767B;
+    --line:#D8D9DC;
+    --line-soft:#E7E8EA;
+    --accent:#C8102E;
+    --accent-soft:#FBE9EC;
+    --ok:#1E7A4D;
+    --ok-soft:#E4F2EA;
+    --steel:#2B2F36;
+    --radius:10px;
+    --mk-zoom:.72;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#121417;
+      --surface:#1B1E22;
+      --surface-2:#22262B;
+      --ink:#ECEDEF;
+      --ink-2:#B6B8BD;
+      --muted:#8B878D;
+      --line:#33373D;
+      --line-soft:#292D32;
+      --accent:#FF5A72;
+      --accent-soft:#3A1A20;
+      --ok:#5CC48D;
+      --ok-soft:#16301F;
+      --steel:#2B2F36;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#121417;
+    --surface:#1B1E22;
+    --surface-2:#22262B;
+    --ink:#ECEDEF;
+    --ink-2:#B6B8BD;
+    --muted:#8B878D;
+    --line:#33373D;
+    --line-soft:#292D32;
+    --accent:#FF5A72;
+    --accent-soft:#3A1A20;
+    --ok:#5CC48D;
+    --ok-soft:#16301F;
+    --steel:#2B2F36;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+    font-size:15px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:40px 24px 72px;display:flex;flex-direction:column;gap:38px}
+
+  /* ---------- doc header ---------- */
+  .doc-head{display:flex;flex-direction:column;gap:14px;padding-bottom:26px;border-bottom:2px solid var(--ink)}
+  .eyebrow{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+  }
+  h1{
+    font-family:"IBM Plex Sans Condensed","IBM Plex Sans",Arial,sans-serif;
+    font-weight:700;font-size:clamp(30px,4.4vw,44px);line-height:1.08;margin:0;
+    text-wrap:balance;letter-spacing:-.01em;
+  }
+  .lede{font-size:16.5px;color:var(--ink-2);max-width:62ch;margin:0}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:6px;
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12px;color:var(--muted);
+  }
+  .meta b{color:var(--ink-2);font-weight:500}
+
+  /* ---------- sections ---------- */
+  section{display:flex;flex-direction:column;gap:16px}
+  h2{
+    font-family:"IBM Plex Sans Condensed","IBM Plex Sans",Arial,sans-serif;
+    font-weight:600;font-size:24px;margin:0;letter-spacing:-.005em;
+    display:flex;align-items:baseline;gap:12px;
+  }
+  h2 .num{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12.5px;
+    color:var(--accent);letter-spacing:.08em;transform:translateY(-2px)
+  }
+  h3{
+    font-family:"IBM Plex Sans Condensed","IBM Plex Sans",Arial,sans-serif;
+    font-weight:600;font-size:16px;margin:0;color:var(--ink);
+  }
+  p{margin:0;max-width:68ch;color:var(--ink-2)}
+  .cap{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  }
+
+  /* ---------- mockup frame ---------- */
+  .frame{
+    background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);
+    overflow-x:auto;padding:14px;
+  }
+  .frame-head{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;
+  }
+  .tag{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.09em;
+    text-transform:uppercase;padding:3px 9px;border-radius:100px;white-space:nowrap;
+  }
+  .tag.now{background:var(--surface);color:var(--muted);border:1px solid var(--line)}
+  .tag.new{background:var(--ok-soft);color:var(--ok);border:1px solid transparent}
+
+  /* ---------- the site mockup (always light – it depicts the real site) ---------- */
+  .mk{
+    width:1280px;background:#fff;color:#1b1f24;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    zoom:var(--mk-zoom);
+    border:1px solid #dfe0e3;border-radius:4px;overflow:hidden;
+  }
+  .mk-top{
+    background:#2B2F36;height:46px;display:flex;align-items:center;
+    justify-content:space-between;padding:0 30px;
+  }
+  .mk-top span{color:#c3c6cb;font-size:13px}
+  .mk-top-r{display:flex;align-items:center;gap:9px}
+  .mk-sq{width:30px;height:30px;border-radius:7px;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700}
+  .mk-phone{color:#fff;font-size:19px;font-weight:700;margin-left:10px;letter-spacing:.01em}
+
+  .mk-main{display:flex;align-items:center;gap:26px;padding:18px 30px 14px}
+  .mk-logo{font-family:Georgia,"Times New Roman",serif;color:#CC0A15;line-height:1}
+  .mk-logo .a{font-size:27px;letter-spacing:.02em;display:block}
+  .mk-logo .b{font-size:11px;letter-spacing:.5em;display:block;margin-top:4px;padding-left:2px}
+  .mk-search{
+    flex:1;display:flex;align-items:center;height:46px;
+    border:2px solid #1b1f24;border-radius:9px;overflow:hidden;background:#fff;
+  }
+  .mk-search .ph{flex:1;padding:0 16px;color:#8d9096;font-size:15px}
+  .mk-search .cam{width:52px;height:100%;display:grid;place-items:center;border-left:1px solid #e3e4e7;color:#4a4d53}
+  .mk-search .go{width:56px;height:100%;display:grid;place-items:center;background:#1b1f24;color:#fff}
+  .mk-act{display:flex;align-items:center;gap:20px;color:#1b1f24}
+  .mk-act .it{position:relative;display:flex;align-items:center;gap:7px;font-size:14px}
+  .mk-badge{
+    position:absolute;top:-5px;right:-7px;background:#CC0A15;color:#fff;font-size:10px;
+    width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font-weight:700
+  }
+
+  /* the new row */
+  .mk-social{
+    display:flex;align-items:center;gap:8px;padding:2px 30px 14px;
+  }
+  .mk-social.is-new{position:relative}
+  .mk-social.is-new::before{
+    content:"";position:absolute;left:24px;right:24px;top:-4px;bottom:6px;
+    border:1.5px dashed #1E7A4D;border-radius:8px;pointer-events:none;
+  }
+  .pill{
+    display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    flex:1 1 0;min-width:0;height:34px;padding:0 10px;
+    border-radius:7px;color:#fff;font-size:13px;font-weight:500;white-space:nowrap;
+  }
+  .pill i{
+    width:18px;height:18px;border-radius:4px;background:rgba(255,255,255,.92);
+    display:grid;place-items:center;font-size:10px;font-weight:700;font-style:normal;color:inherit;
+  }
+  .pill.o{background:#2B7BB9}
+  .pill.o i{color:#2B7BB9}
+  .pill.w{background:#1E7A4D}.pill.w i{color:#1E7A4D}
+  .pill.m{background:#7B5BD6}.pill.m i{color:#7B5BD6}
+  .pill.v{background:#0B5FD4}.pill.v i{color:#0B5FD4}
+  .pill.t{background:#1A1A1A}.pill.t i{color:#1A1A1A}
+  .pill.s{background:#C3CB1F}.pill.s i{color:#7C8106}
+  .pill.d{background:#5865F2}.pill.d i{color:#5865F2}
+  .pill.y{background:#C4302B}.pill.y i{color:#C4302B}
+  .pill.r{background:#383C44}.pill.r i{color:#383C44}
+  .pill.n{background:#E04A28}.pill.n i{color:#E04A28}
+
+  .mk-nav{
+    border-top:1px solid #e7e8ea;display:flex;align-items:center;gap:30px;
+    padding:14px 30px;font-size:15px;
+  }
+  .mk-nav .act{color:#CC0A15;font-weight:600}
+  .mk-crumbs{background:#f6f6f7;border-top:1px solid #e7e8ea;padding:11px 30px;font-size:13px;color:#8d9096}
+
+  /* ---------- phone mockup ---------- */
+  .phone-row{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+  .phone{
+    width:330px;flex:0 0 auto;background:#fff;border:1px solid #dfe0e3;border-radius:16px;overflow:hidden;
+    font-family:"Helvetica Neue",Arial,sans-serif;color:#1b1f24;
+  }
+  .ph-top{background:#2B2F36;color:#c3c6cb;font-size:11px;padding:8px 12px;display:flex;justify-content:space-between}
+  .ph-main{display:flex;align-items:center;gap:10px;padding:11px 12px}
+  .ph-logo{font-family:Georgia,serif;color:#CC0A15;font-size:15px}
+  .ph-search{flex:1;height:32px;border:1.5px solid #1b1f24;border-radius:7px;display:flex;align-items:center;padding:0 9px;color:#8d9096;font-size:11px}
+  .ph-social{
+    display:flex;gap:7px;padding:0 12px 11px;overflow:hidden;position:relative;
+  }
+  .ph-social::after{
+    content:"";position:absolute;right:0;top:0;bottom:11px;width:38px;
+    background:linear-gradient(90deg,rgba(255,255,255,0),#fff 72%);
+  }
+  .ic{width:30px;height:30px;border-radius:7px;flex:0 0 auto;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:700}
+  .ph-nav{border-top:1px solid #e7e8ea;padding:10px 12px;font-size:12px;color:#CC0A15;font-weight:600}
+  .phone-note{flex:1;min-width:260px;display:flex;flex-direction:column;gap:12px}
+
+  /* ---------- spec table ---------- */
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:620px;font-size:14.5px}
+  th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  thead th{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--surface-2);
+  }
+  tbody tr:last-child td{border-bottom:none}
+  td.id{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12.5px;color:var(--accent);
+    white-space:nowrap;font-variant-numeric:tabular-nums;
+  }
+  td.val{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;color:var(--ink);white-space:nowrap}
+  td strong{color:var(--ink);font-weight:600}
+
+  /* ---------- lists ---------- */
+  ul.clean{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+  ul.clean li{display:flex;gap:11px;color:var(--ink-2);max-width:70ch}
+  ul.clean li::before{
+    content:"";flex:0 0 auto;width:6px;height:6px;border-radius:2px;background:var(--accent);
+    margin-top:9px;
+  }
+  ul.check li::before{
+    content:"";width:15px;height:15px;border-radius:4px;border:1.5px solid var(--line);
+    background:var(--surface);margin-top:5px;
+  }
+  ul.no li::before{background:var(--muted)}
+
+  /* ---------- code ---------- */
+  .code{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    overflow-x:auto;
+  }
+  .code .bar{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:9px 14px;border-bottom:1px solid var(--line-soft);background:var(--surface-2);
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--muted);position:sticky;left:0;
+  }
+  pre{
+    margin:0;padding:16px 18px;font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:12.7px;line-height:1.62;color:var(--ink);white-space:pre;
+  }
+  .cmt{color:var(--muted)}
+
+  .callout{
+    display:flex;gap:14px;padding:15px 17px;border-radius:var(--radius);
+    background:var(--accent-soft);border-left:3px solid var(--accent);
+  }
+  .callout p{color:var(--ink);font-size:14.5px}
+
+  footer{
+    border-top:1px solid var(--line);padding-top:18px;
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;color:var(--muted);
+  }
+
+  @media (max-width:760px){
+    :root{--mk-zoom:.5}
+    .wrap{padding:28px 16px 56px;gap:30px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+  <header class="doc-head">
+    <div class="eyebrow">Техническое задание · vitaprom · шапка сайта</div>
+    <h1>Строка мессенджеров и соцсетей в шапке</h1>
+    <p class="lede">Продублировать блок кнопок связи из подвала одной горизонтальной строкой в шапке — сразу под строкой поиска, над главным меню. Состав, порядок и ссылки — те же, что в подвале; меняется только место и размер.</p>
+    <div class="meta">
+      <span>Страница: <b>вся сквозная шапка (header)</b></span>
+      <span>Тип работ: <b>вёрстка + шаблон</b></span>
+      <span>Оценка: <b>2–4 ч</b></span>
+      <span>Дата: <b>02.09.2026</b></span>
+    </div>
+  </header>
+
+  <!-- ========== 1. БЫЛО ========== -->
+  <section>
+    <h2><span class="num">01</span>Сейчас</h2>
+    <p>Кнопки связи есть только в подвале. В шапке — четыре мелкие иконки в тёмной полосе сверху, без подписей.</p>
+    <div class="frame">
+      <div class="frame-head"><span class="cap">Текущая шапка · desktop 1280 px</span><span class="tag now">Было</span></div>
+      <div class="mk">
+        <div class="mk-top">
+          <span>Поставки котельного и горелочного оборудования</span>
+          <div class="mk-top-r">
+            <div class="mk-sq" style="background:#2B7BB9">TG</div>
+            <div class="mk-sq" style="background:#1E7A4D">WA</div>
+            <div class="mk-sq" style="background:#7B5BD6">M</div>
+            <div class="mk-sq" style="background:#C4302B">@</div>
+            <div class="mk-phone">+7 (499) 677-24-07</div>
+          </div>
+        </div>
+        <div class="mk-main">
+          <div class="mk-logo"><span class="a">VITAPROM</span><span class="b">GROUP</span></div>
+          <div class="mk-search">
+            <div class="ph">Поиск по каталогу — название или артикул…</div>
+            <div class="cam">◉</div>
+            <div class="go">🔍</div>
+          </div>
+          <div class="mk-act">
+            <div class="it">♡<span class="mk-badge">3</span></div>
+            <div class="it">🛒</div>
+            <div class="it">◍ Войти</div>
+          </div>
+        </div>
+        <div class="mk-nav">
+          <span class="act">Каталог ⌄</span><span>Бренды</span><span>О компании ⌄</span>
+        </div>
+        <div class="mk-crumbs">Главная / Каталог / Электронные платы и дисплеи / Платы электронные</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 2. СТАЛО ========== -->
+  <section>
+    <h2><span class="num">02</span>Как должно стать</h2>
+    <p>Между строкой поиска и меню появляется новая строка с десятью кнопками: три мессенджера, затем семь соцсетей. Одна строка, без переноса, без раскрывающихся меню. <strong>Все кнопки одинаковой ширины</strong> — независимо от длины названия, строка читается как единая ровная полоса.</p>
+    <div class="frame">
+      <div class="frame-head"><span class="cap">Новая шапка · desktop 1280 px</span><span class="tag new">Стало</span></div>
+      <div class="mk">
+        <div class="mk-top">
+          <span>Поставки котельного и горелочного оборудования</span>
+          <div class="mk-top-r">
+            <div class="mk-sq" style="background:#2B7BB9">TG</div>
+            <div class="mk-sq" style="background:#1E7A4D">WA</div>
+            <div class="mk-sq" style="background:#7B5BD6">M</div>
+            <div class="mk-sq" style="background:#C4302B">@</div>
+            <div class="mk-phone">+7 (499) 677-24-07</div>
+          </div>
+        </div>
+        <div class="mk-main">
+          <div class="mk-logo"><span class="a">VITAPROM</span><span class="b">GROUP</span></div>
+          <div class="mk-search">
+            <div class="ph">Поиск по каталогу — название или артикул…</div>
+            <div class="cam">◉</div>
+            <div class="go">🔍</div>
+          </div>
+          <div class="mk-act">
+            <div class="it">♡<span class="mk-badge">3</span></div>
+            <div class="it">🛒</div>
+            <div class="it">◍ Войти</div>
+          </div>
+        </div>
+        <div class="mk-social is-new">
+          <a class="pill o"><i>T</i>Telegram</a>
+          <a class="pill w"><i>W</i>WhatsApp</a>
+          <a class="pill m"><i>M</i>MAX</a>
+          <a class="pill v"><i>VK</i>VK</a>
+          <a class="pill t"><i>d</i>TikTok</a>
+          <a class="pill s"><i>S</i>Snapchat</a>
+          <a class="pill d"><i>D</i>Discord</a>
+          <a class="pill y"><i>▶</i>YouTube</a>
+          <a class="pill r"><i>R</i>Rutube</a>
+          <a class="pill n"><i>T</i>TenChat</a>
+        </div>
+        <div class="mk-nav">
+          <span class="act">Каталог ⌄</span><span>Бренды</span><span>О компании ⌄</span>
+        </div>
+        <div class="mk-crumbs">Главная / Каталог / Электронные платы и дисплеи / Платы электронные</div>
+      </div>
+    </div>
+    <div class="callout">
+      <p><strong>Ключевое:</strong> новый блок вставляется <em>внутрь</em> существующего header, между строкой поиска и меню. Тёмная верхняя полоса, логотип, поиск, избранное/корзина/вход и меню остаются без изменений.</p>
+    </div>
+  </section>
+
+  <!-- ========== 3. ПАРАМЕТРЫ ========== -->
+  <section>
+    <h2><span class="num">03</span>Параметры строки</h2>
+    <p>Пункт <span style="font-family:'IBM Plex Mono',monospace;color:var(--accent)">H-06</span> — обязательный: ширина кнопки не зависит от длины названия.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Параметр</th><th>Значение</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="id">H-01</td><td>Положение</td><td>Внутри <strong>&lt;header&gt;</strong>, после строки поиска, перед строкой меню «Каталог / Бренды / О компании»</td></tr>
+          <tr><td class="id">H-02</td><td>Состав и порядок</td><td>Telegram, WhatsApp, MAX, VK, TikTok, Snapchat, Discord, YouTube, Rutube, TenChat — <strong>тот же порядок, что в подвале</strong></td></tr>
+          <tr><td class="id">H-03</td><td>Ссылки</td><td>Берутся из тех же настроек/констант, что и подвал. <strong>Один источник данных</strong> — правка ссылки в админке меняет её в обоих местах</td></tr>
+          <tr><td class="id">H-04</td><td>Иконки</td><td>Те же SVG, что в подвале. Размер иконки <span style="font-family:'IBM Plex Mono',monospace">18×18 px</span></td></tr>
+          <tr><td class="id">H-05</td><td>Кнопка</td><td>Высота <span style="font-family:'IBM Plex Mono',monospace">34 px</span>, радиус <span style="font-family:'IBM Plex Mono',monospace">7 px</span>, шрифт <span style="font-family:'IBM Plex Mono',monospace">13 px / 500</span>, текст белый</td></tr>
+          <tr><td class="id">H-06</td><td>Ширина кнопок</td><td><strong>Все десять кнопок строго одинаковой ширины.</strong> Не по содержимому: <span style="font-family:'IBM Plex Mono',monospace">flex:1 1 0</span> — кнопки поровну делят ширину контейнера (≈ <span style="font-family:'IBM Plex Mono',monospace">114 px</span> при контенте 1216 px). Иконка и подпись центрируются внутри кнопки</td></tr>
+          <tr><td class="id">H-07</td><td>Цвета</td><td>Фирменные цвета сервисов — те же, что в подвале, без изменений</td></tr>
+          <tr><td class="id">H-08</td><td>Промежуток</td><td><span style="font-family:'IBM Plex Mono',monospace">gap: 8px</span>, строка занимает всю ширину контентного контейнера от левого до правого края</td></tr>
+          <tr><td class="id">H-09</td><td>Отступы блока</td><td>Сверху <span style="font-family:'IBM Plex Mono',monospace">2 px</span> от строки поиска, снизу <span style="font-family:'IBM Plex Mono',monospace">14 px</span> до разделителя меню</td></tr>
+          <tr><td class="id">H-10</td><td>Hover</td><td>Затемнение фона на 8 % + <span style="font-family:'IBM Plex Mono',monospace">transform: translateY(-1px)</span>, переход <span style="font-family:'IBM Plex Mono',monospace">.15s</span></td></tr>
+          <tr><td class="id">H-11</td><td>Атрибуты ссылок</td><td><span style="font-family:'IBM Plex Mono',monospace">target="_blank" rel="noopener nofollow"</span>, <span style="font-family:'IBM Plex Mono',monospace">aria-label</span> с названием сервиса</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== 4. АДАПТИВ ========== -->
+  <section>
+    <h2><span class="num">04</span>Поведение на разных экранах</h2>
+    <div class="phone-row">
+      <div class="phone">
+        <div class="ph-top"><span>Поставки оборудования</span><span>+7 (499) 677-24-07</span></div>
+        <div class="ph-main">
+          <div class="ph-logo">VITAPROM</div>
+          <div class="ph-search">Поиск по каталогу…</div>
+        </div>
+        <div class="ph-social">
+          <div class="ic" style="background:#2B7BB9">T</div>
+          <div class="ic" style="background:#1E7A4D">W</div>
+          <div class="ic" style="background:#7B5BD6">M</div>
+          <div class="ic" style="background:#0B5FD4">VK</div>
+          <div class="ic" style="background:#1A1A1A">d</div>
+          <div class="ic" style="background:#C3CB1F">S</div>
+          <div class="ic" style="background:#5865F2">D</div>
+          <div class="ic" style="background:#C4302B">▶</div>
+        </div>
+        <div class="ph-nav">☰ Каталог</div>
+      </div>
+      <div class="phone-note">
+        <span class="cap">Мобильная версия · 390 px</span>
+        <ul class="clean">
+          <li><strong>≥ 1200 px</strong> — все 10 кнопок с подписями в одну строку, ширина у всех одинаковая, строка тянется на всю ширину контента.</li>
+          <li><strong>768–1199 px</strong> — подписи скрываются, остаются равные квадраты <span style="font-family:'IBM Plex Mono',monospace">34×34</span>; строка по-прежнему одна.</li>
+          <li><strong>&lt; 768 px</strong> — иконки <span style="font-family:'IBM Plex Mono',monospace">30×30</span>, строка горизонтально прокручивается свайпом: <span style="font-family:'IBM Plex Mono',monospace">overflow-x:auto; scrollbar-width:none</span>. Справа — градиент-подсказка, что список продолжается.</li>
+          <li>Перенос на вторую строку <strong>не допускается</strong> ни на одном разрешении.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5. КОД ========== -->
+  <section>
+    <h2><span class="num">05</span>Заготовка разметки и стилей</h2>
+    <p>Можно взять как есть; классы и цвета подогнать под существующие в проекте.</p>
+    <div class="code">
+      <div class="bar"><span>html</span><span>вставить после блока строки поиска</span></div>
+<pre>&lt;div class="header-social"&gt;
+  &lt;a href="{{ tg_url }}"  class="hs-btn hs-tg" target="_blank" rel="noopener nofollow" aria-label="Telegram"&gt;
+    &lt;svg class="hs-ico"&gt;…&lt;/svg&gt;&lt;span&gt;Telegram&lt;/span&gt;
+  &lt;/a&gt;
+  <span class="cmt">&lt;!-- WhatsApp, MAX, VK, TikTok, Snapchat, Discord, YouTube, Rutube, TenChat --&gt;</span>
+&lt;/div&gt;</pre>
+    </div>
+    <div class="code">
+      <div class="bar"><span>css</span><span>header-social</span></div>
+<pre>.header-social{
+  display:flex; align-items:center; gap:8px;
+  padding:2px 0 14px;              <span class="cmt">/* внутри контентного контейнера шапки */</span>
+}
+
+.hs-btn{
+  <span class="cmt">/* H-06: все кнопки одинаковой ширины — делят строку поровну */</span>
+  flex:1 1 0; min-width:0;
+  display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  height:34px; padding:0 10px; border-radius:7px;
+  color:#fff; font-size:13px; font-weight:500; text-decoration:none;
+  transition:filter .15s ease, transform .15s ease;
+}
+.hs-btn:hover{ filter:brightness(.92); transform:translateY(-1px); }
+.hs-btn:focus-visible{ outline:2px solid #1b1f24; outline-offset:2px; }
+.hs-ico{ width:18px; height:18px; flex:0 0 auto; }
+
+<span class="cmt">/* фирменные цвета — те же, что в подвале */</span>
+.hs-tg{background:#2B7BB9} .hs-wa{background:#1E7A4D} .hs-max{background:#7B5BD6}
+.hs-vk{background:#0B5FD4} .hs-tt{background:#1A1A1A} .hs-sc{background:#C3CB1F}
+.hs-dc{background:#5865F2} .hs-yt{background:#C4302B} .hs-rt{background:#383C44}
+.hs-tc{background:#E04A28}
+
+<span class="cmt">/* планшет: подписи убираем, квадраты одинакового размера */</span>
+@media (max-width:1199px){
+  .hs-btn span{ display:none; }
+  .hs-btn{ flex:0 0 34px; width:34px; padding:0; }
+}
+<span class="cmt">/* телефон: одинаковые квадраты + горизонтальный свайп */</span>
+@media (max-width:767px){
+  .header-social{ padding-bottom:10px; overflow-x:auto; scrollbar-width:none; }
+  .header-social::-webkit-scrollbar{ display:none; }
+  .hs-btn{ flex:0 0 30px; width:30px; height:30px; }
+}</pre>
+    </div>
+  </section>
+
+  <!-- ========== 6. НЕ ДЕЛАТЬ ========== -->
+  <section>
+    <h2><span class="num">06</span>Что не менять</h2>
+    <ul class="clean no">
+      <li>Кнопки в подвале остаются на месте — блок именно <strong>дублируется</strong>, а не переносится.</li>
+      <li>Четыре иконки и телефон в тёмной верхней полосе остаются как есть.</li>
+      <li>Логотип, строка поиска, «избранное / корзина / Войти» и меню не сдвигаются по горизонтали.</li>
+      <li>Не добавлять анимации появления, всплывающих подсказок и выпадающих списков.</li>
+    </ul>
+  </section>
+
+  <!-- ========== 7. ПРИЁМКА ========== -->
+  <section>
+    <h2><span class="num">07</span>Критерии приёмки</h2>
+    <ul class="clean check">
+      <li>На разрешении 1280 px все 10 кнопок помещаются в одну строку без переноса и без горизонтальной прокрутки страницы.</li>
+      <li><strong>Ширина всех десяти кнопок одинаковая</strong> — проверяется линейкой в инспекторе: разброс 0 px. Кнопка «VK» той же длины, что «Snapchat».</li>
+      <li>Каждая ссылка открывается в новой вкладке и ведёт на тот же адрес, что аналогичная кнопка в подвале.</li>
+      <li>Изменение ссылки в админке отражается одновременно в шапке и в подвале.</li>
+      <li>Шапка выглядит одинаково на всех страницах сайта (главная, каталог, карточка товара, контакты).</li>
+      <li>На 390 px строка прокручивается свайпом, ничего не обрезается насовсем и не наезжает на меню.</li>
+      <li>Проверено в Chrome, Safari, Firefox и «Яндекс Браузере»; вёрстка не «прыгает» при загрузке.</li>
+      <li>Высота шапки увеличилась не более чем на 50 px; sticky-поведение шапки (если есть) не сломалось.</li>
+    </ul>
+  </section>
+
+  <footer>Эскиз носит характер макета: пропорции, отступы и порядок элементов обязательны, иконки в макете условные — использовать SVG из подвала сайта.</footer>
+</div>
+</body>
+</html>

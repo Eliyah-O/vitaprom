@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<style>:root{color-scheme:light dark}body{margin:0;padding:0}</style>
+</head>
+<body>
+<title>Halyx Telemetry Cloud — Sign in</title>
+<style>
+  :root {
+    /* Committed dark ops-console palette — blue-biased slate neutrals */
+    --bg:        #0a0e16;
+    --bg-grid:   #0e1420;
+    --panel:     #101626;
+    --panel-2:   #0d1320;
+    --card:      #121a2b;
+    --border:    #202b40;
+    --border-2:  #2a3852;
+    --text:      #e7ecf5;
+    --muted:     #8b97ad;
+    --faint:     #5c687e;
+    --accent:    #5b8def;
+    --accent-hi: #7ea6ff;
+    --cyan:      #38bdf8;
+    --good:      #3fb04f;
+    --good-hi:   #57c96a;
+    --danger:    #f0685f;
+    --danger-bg: #2a1618;
+    --radius:    12px;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--sans);
+    color: var(--text);
+    background:
+      radial-gradient(1200px 600px at 15% -10%, #16233c 0%, transparent 55%),
+      radial-gradient(900px 500px at 100% 110%, #10203a 0%, transparent 50%),
+      var(--bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  a { color: var(--accent-hi); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+  }
+
+  /* ---------- Left: brand + live telemetry ---------- */
+  .brand-pane {
+    position: relative;
+    padding: 40px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+    background:
+      linear-gradient(180deg, rgba(91,141,239,0.05), transparent 40%),
+      var(--panel);
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .brand-pane::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--bg-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: radial-gradient(720px 520px at 20% 20%, #000 0%, transparent 75%);
+            mask-image: radial-gradient(720px 520px at 20% 20%, #000 0%, transparent 75%);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .brand-pane > * { position: relative; z-index: 1; }
+
+  .logo {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--mono);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    font-size: 19px;
+  }
+  .logo .mark {
+    width: 30px; height: 30px;
+    display: grid; place-items: center;
+    color: var(--accent);
+  }
+  .logo .sub {
+    color: var(--faint);
+    font-weight: 500;
+    border-left: 1px solid var(--border-2);
+    padding-left: 12px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .pitch { max-width: 30ch; }
+  .pitch h1 {
+    font-size: clamp(28px, 3.4vw, 40px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+    font-weight: 650;
+  }
+  .pitch p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 15.5px;
+    line-height: 1.55;
+    max-width: 42ch;
+  }
+
+  /* status + live throughput */
+  .telemetry {
+    margin-top: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, var(--panel-2), #0b111d);
+    padding: 16px 18px 14px;
+  }
+  .telemetry-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .status {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--good-hi); font-weight: 500;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--good);
+    box-shadow: 0 0 0 0 rgba(63,176,79,0.55);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(63,176,79,0.5); }
+    70%  { box-shadow: 0 0 0 7px rgba(63,176,79,0); }
+    100% { box-shadow: 0 0 0 0 rgba(63,176,79,0); }
+  }
+  .throughput-label {
+    font-family: var(--mono); font-size: 12px; color: var(--faint);
+  }
+  .throughput-label b { color: var(--cyan); font-weight: 600; }
+  canvas#spark { display: block; width: 100%; height: 56px; }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; margin-top: 14px;
+    background: var(--border); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+  }
+  .stat { background: var(--panel-2); padding: 12px 14px; }
+  .stat .k { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--faint); }
+  .stat .v {
+    font-family: var(--mono); font-size: 18px; margin-top: 4px;
+    font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
+  }
+  .stat .v small { color: var(--muted); font-size: 12px; }
+
+  /* ---------- Right: auth card ---------- */
+  .auth-pane {
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 32px;
+  }
+  .card {
+    width: 100%; max-width: 396px;
+  }
+  .card h2 {
+    font-size: 23px; margin: 0 0 6px; letter-spacing: -0.01em; font-weight: 620;
+  }
+  .card .lead { color: var(--muted); font-size: 14.5px; margin: 0 0 26px; }
+
+  form { display: flex; flex-direction: column; gap: 15px; }
+  .field { display: flex; flex-direction: column; gap: 7px; }
+  .field label {
+    font-size: 12.5px; color: var(--muted); font-weight: 500; letter-spacing: 0.01em;
+  }
+  .field .row { display: flex; align-items: center; justify-content: space-between; }
+  input[type=email], input[type=password] {
+    width: 100%;
+    background: #0c1220;
+    border: 1px solid var(--border-2);
+    border-radius: 9px;
+    color: var(--text);
+    font: 15px/1.2 var(--sans);
+    padding: 11px 13px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  input::placeholder { color: #46516640; color: var(--faint); opacity: .7; }
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(91,141,239,0.18);
+  }
+
+  .check { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+  .check input { accent-color: var(--accent); width: 15px; height: 15px; }
+  .check label { color: var(--muted); font-size: 13px; }
+
+  .btn {
+    appearance: none; border: 0; cursor: pointer;
+    border-radius: 9px; padding: 12px 14px;
+    font: 600 15px var(--sans); letter-spacing: 0.01em;
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    transition: background .15s, transform .05s, opacity .15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-hi); }
+  .btn-primary:active { transform: translateY(1px); }
+  .btn-primary:disabled { cursor: default; opacity: .7; background: var(--accent); }
+  .btn-ghost {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border-2);
+  }
+  .btn-ghost:hover { border-color: var(--faint); background: #0e1524; }
+
+  .spinner {
+    width: 15px; height: 15px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: #fff;
+    animation: spin .6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error {
+    display: none;
+    align-items: flex-start; gap: 9px;
+    background: var(--danger-bg);
+    border: 1px solid #59282a;
+    color: #f6a7a1;
+    border-radius: 9px;
+    padding: 10px 12px;
+    font-size: 13.5px; line-height: 1.4;
+  }
+  .error.show { display: flex; }
+  .error svg { flex: 0 0 auto; margin-top: 1px; }
+
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--faint); font-size: 12px; margin: 2px 0;
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .divider::before, .divider::after {
+    content: ""; height: 1px; background: var(--border); flex: 1;
+  }
+
+  .foot-note { margin-top: 22px; font-size: 13px; color: var(--faint); }
+
+  /* ---------- Bottom bar ---------- */
+  .statusbar {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border);
+    background: var(--panel-2);
+    display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+    padding: 10px 24px;
+    font-family: var(--mono); font-size: 12px; color: var(--faint);
+  }
+  .statusbar .sep { color: #26304400; }
+  .statusbar b { color: var(--muted); font-weight: 500; }
+  .statusbar .live { color: var(--cyan); font-variant-numeric: tabular-nums; }
+  .statusbar .right { margin-left: auto; display: flex; gap: 20px; align-items: center; }
+  .region-sel {
+    background: transparent; border: 1px solid var(--border-2); color: var(--muted);
+    border-radius: 7px; padding: 4px 8px; font: 12px var(--mono);
+  }
+
+  .grid-layout { display: contents; }
+
+  @media (max-width: 880px) {
+    .shell { grid-template-columns: 1fr; }
+    .brand-pane {
+      border-right: 0; border-bottom: 1px solid var(--border);
+      padding: 26px 24px; gap: 22px;
+    }
+    .brand-pane::before { -webkit-mask-image: radial-gradient(500px 400px at 30% 10%, #000, transparent 80%); mask-image: radial-gradient(500px 400px at 30% 10%, #000, transparent 80%); }
+    .pitch { max-width: none; }
+    .telemetry { margin-top: 8px; }
+    .auth-pane { padding: 30px 22px; }
+    .statusbar .right { width: 100%; margin-left: 0; justify-content: space-between; }
+  }
+  @media (max-width: 520px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stats .stat:last-child { grid-column: 1 / -1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot { animation: none; }
+    .spinner { animation: none; }
+  }
+</style>
+
+<div class="shell">
+  <!-- LEFT -->
+  <section class="brand-pane">
+    <div class="logo">
+      <span class="mark" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+          <path d="M16 2 L28 9 V23 L16 30 L4 23 V9 Z" stroke="currentColor" stroke-width="1.6" fill="rgba(91,141,239,0.08)"/>
+          <path d="M16 9 L22 12.5 V19.5 L16 23 L10 19.5 V12.5 Z" stroke="currentColor" stroke-width="1.6" fill="rgba(56,189,248,0.18)"/>
+          <circle cx="16" cy="16" r="2.1" fill="currentColor"/>
+        </svg>
+      </span>
+      <span>halyx</span>
+      <span class="sub">Telemetry Cloud</span>
+    </div>
+
+    <div class="pitch">
+      <h1>Planet-scale telemetry, one query away.</h1>
+      <p>Ingest, correlate, and alert on trillions of events across your fleet — with sub-second queries and no sampling.</p>
+    </div>
+
+    <div class="telemetry">
+      <div class="telemetry-head">
+        <span class="status"><span class="dot"></span> All systems operational</span>
+        <span class="throughput-label">ingest&nbsp; <b id="tp">1.94M</b>&nbsp;evt/s</span>
+      </div>
+      <canvas id="spark" width="640" height="112" aria-hidden="true"></canvas>
+      <div class="stats">
+        <div class="stat"><div class="k">Events today</div><div class="v" id="evt">12.84<small>B</small></div></div>
+        <div class="stat"><div class="k">p50 query</div><div class="v">41<small>ms</small></div></div>
+        <div class="stat"><div class="k">Regions</div><div class="v">17</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIGHT -->
+  <section class="auth-pane">
+    <div class="card">
+      <h2>Sign in to Halyx</h2>
+      <p class="lead">Use your workspace credentials to access the console.</p>
+
+      <div class="error" id="err" role="alert" aria-live="assertive">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#f0685f" stroke-width="1.4"/><path d="M8 4.6v4.2M8 11.1h.01" stroke="#f0685f" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span id="err-msg"></span>
+      </div>
+
+      <form id="form" novalidate autocomplete="off">
+        <div class="field">
+          <label for="email">Work email</label>
+          <input id="email" type="email" name="email" placeholder="you@company.com" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="field">
+          <div class="row">
+            <label for="password">Password</label>
+            <a href="#" tabindex="-1" style="font-size:12.5px">Forgot?</a>
+          </div>
+          <input id="password" type="password" name="password" placeholder="••••••••••••" autocomplete="off">
+        </div>
+        <div class="check">
+          <input id="stay" type="checkbox">
+          <label for="stay">Keep me signed in on this device</label>
+        </div>
+        <button class="btn btn-primary" id="submit" type="submit">Sign in</button>
+        <div class="divider">or</div>
+        <button class="btn btn-ghost" type="button" id="sso">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2.5" y="7" width="11" height="7" rx="1.4" stroke="currentColor" stroke-width="1.3"/><path d="M5 7V5a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.3"/></svg>
+          Continue with SSO
+        </button>
+      </form>
+
+      <p class="foot-note">New to Halyx? Access is provisioned by your workspace administrator.</p>
+    </div>
+  </section>
+
+  <!-- BOTTOM STATUS BAR -->
+  <footer class="statusbar">
+    <span><b>Console</b> v4.19.2 · <span id="build">a1f9c3d</span></span>
+    <span>edge <span class="live" id="rps">48,213</span> req/s</span>
+    <span>latency <b id="lat">38</b>ms</span>
+    <div class="right">
+      <select class="region-sel" aria-label="Region">
+        <option>eu-central · Frankfurt</option>
+        <option>eu-west · Amsterdam</option>
+        <option>us-east · Ashburn</option>
+        <option>ap-south · Singapore</option>
+      </select>
+      <a href="#">Status</a>
+      <span>© 2026 Halyx, Inc.</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- live edge req/s + latency (pure cosmetic, no data anywhere) ---- */
+  var rpsEl = document.getElementById("rps");
+  var latEl = document.getElementById("lat");
+  var tpEl  = document.getElementById("tp");
+  var evtEl = document.getElementById("evt");
+  var rps = 48213, evt = 12.84;
+  function jitter() {
+    rps = Math.max(41000, Math.min(56000, rps + Math.round((Math.random() - 0.5) * 1600)));
+    rpsEl.textContent = rps.toLocaleString("en-US");
+    latEl.textContent = (34 + Math.round(Math.random() * 12));
+    tpEl.textContent = (1.7 + Math.random() * 0.5).toFixed(2) + "M";
+    evt = evt + 0.01 + Math.random() * 0.02;
+    evtEl.innerHTML = evt.toFixed(2) + "<small>B</small>";
+  }
+  jitter();
+  if (!reduce) setInterval(jitter, 1400);
+
+  /* ---- throughput sparkline ---- */
+  var cv = document.getElementById("spark");
+  var ctx = cv.getContext("2d");
+  var N = 72, data = [];
+  for (var i = 0; i < N; i++) data.push(0.5 + Math.random() * 0.25);
+  function resize() {
+    var r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    cv.width = r.width * dpr; cv.height = r.height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function draw() {
+    var w = cv.getBoundingClientRect().width, h = cv.getBoundingClientRect().height;
+    ctx.clearRect(0, 0, w, h);
+    var step = w / (N - 1), pad = 6;
+    function y(v) { return h - pad - v * (h - pad * 2); }
+    // grid
+    ctx.strokeStyle = "rgba(42,56,82,0.55)"; ctx.lineWidth = 1;
+    for (var g = 0; g < 3; g++) { var gy = pad + g * (h - pad * 2) / 2; ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke(); }
+    // area
+    ctx.beginPath(); ctx.moveTo(0, h);
+    for (var i = 0; i < N; i++) ctx.lineTo(i * step, y(data[i]));
+    ctx.lineTo(w, h); ctx.closePath();
+    var grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, "rgba(56,189,248,0.30)");
+    grad.addColorStop(1, "rgba(56,189,248,0.00)");
+    ctx.fillStyle = grad; ctx.fill();
+    // line
+    ctx.beginPath();
+    for (var j = 0; j < N; j++) { var px = j * step, py = y(data[j]); j ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    ctx.strokeStyle = "#38bdf8"; ctx.lineWidth = 1.6; ctx.stroke();
+    // endpoint
+    ctx.beginPath(); ctx.arc((N - 1) * step, y(data[N - 1]), 2.6, 0, 7); ctx.fillStyle = "#7dd3fc"; ctx.fill();
+  }
+  function tick() { data.push(0.45 + Math.random() * 0.4); if (data.length > N) data.shift(); draw(); }
+  resize(); draw();
+  window.addEventListener("resize", function () { resize(); draw(); });
+  if (!reduce) setInterval(tick, 900);
+
+  /* ---- login form: ALWAYS fails, collects nothing, sends nothing ---- */
+  var form = document.getElementById("form");
+  var btn = document.getElementById("submit");
+  var err = document.getElementById("err");
+  var errMsg = document.getElementById("err-msg");
+  var email = document.getElementById("email");
+  var pass = document.getElementById("password");
+  var attempts = 0, cooling = false;
+
+  function showError(msg) {
+    errMsg.textContent = msg;
+    err.classList.add("show");
+  }
+  function reset() { btn.disabled = false; btn.innerHTML = "Sign in"; }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (cooling) return;
+    err.classList.remove("show");
+
+    // empty check — still an error, still nothing stored
+    if (!email.value.trim() || !pass.value) {
+      showError("Enter your work email and password to continue.");
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Verifying…';
+
+    setTimeout(function () {
+      attempts++;
+      if (attempts >= 3) {
+        // rate-limit theatre for a "high-load" service
+        var left = 30;
+        cooling = true;
+        showError("Too many sign-in attempts. For security, try again in a few minutes.");
+        btn.innerHTML = "Try again in " + left + "s";
+        var iv = setInterval(function () {
+          left--;
+          if (left <= 0) { clearInterval(iv); cooling = false; attempts = 2; reset(); }
+          else btn.innerHTML = "Try again in " + left + "s";
+        }, 1000);
+      } else {
+        showError("We couldn’t sign you in. Check your email and password, then try again.");
+        reset();
+      }
+      pass.value = "";
+    }, reduce ? 250 : 780);
+  });
+
+  document.getElementById("sso").addEventListener("click", function () {
+    err.classList.remove("show");
+    var b = this, orig = b.innerHTML;
+    b.disabled = true; b.innerHTML = '<span class="spinner" style="border-color:rgba(231,236,245,.35);border-top-color:#e7ecf5"></span> Redirecting…';
+    setTimeout(function () {
+      b.disabled = false; b.innerHTML = orig;
+      showError("Your SSO provider is temporarily unavailable. Try email sign-in.");
+    }, reduce ? 250 : 1100);
+  });
+})();
+</script>
+</body>
+</html>

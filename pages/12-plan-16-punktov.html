@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<style>:root{color-scheme:light dark}body{margin:0;padding:0}</style>
+</head>
+<body>
+<title>ВИТАПРОМ — План 16 пунктов</title>
+<style>
+  :root{
+    --ground:#ffffff;
+    --panel:#f4f6f9;
+    --card:#ffffff;
+    --ink:#141a22;
+    --ink-soft:#4d5766;
+    --ink-faint:#8a94a4;
+    --line:#dde2e9;
+    --accent:#0f4c81;
+    --accent-wash:#eaf1f7;
+    --accent-line:#c6dbeb;
+    --amber:#a9660a;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ground:#11161c;
+      --panel:#171e26;
+      --card:#161c24;
+      --ink:#e7ecf3;
+      --ink-soft:#a3aebd;
+      --ink-faint:#76818f;
+      --line:#28323d;
+      --accent:#7fb4dd;
+      --accent-wash:#18242f;
+      --accent-line:#2a3d4e;
+      --amber:#d9a15a;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#11161c;
+    --panel:#171e26;
+    --card:#161c24;
+    --ink:#e7ecf3;
+    --ink-soft:#a3aebd;
+    --ink-faint:#76818f;
+    --line:#28323d;
+    --accent:#7fb4dd;
+    --accent-wash:#18242f;
+    --accent-line:#2a3d4e;
+    --amber:#d9a15a;
+  }
+  :root[data-theme="light"]{
+    --ground:#ffffff;
+    --panel:#f4f6f9;
+    --card:#ffffff;
+    --ink:#141a22;
+    --ink-soft:#4d5766;
+    --ink-faint:#8a94a4;
+    --line:#dde2e9;
+    --accent:#0f4c81;
+    --accent-wash:#eaf1f7;
+    --accent-line:#c6dbeb;
+    --amber:#a9660a;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    font-variant-numeric:tabular-nums;
+  }
+  .sheet{max-width:1180px;margin:0 auto;padding:34px 30px 44px}
+
+  .head{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    gap:24px;flex-wrap:wrap;
+    padding-bottom:14px;border-bottom:2px solid var(--accent);
+  }
+  .title{margin:0;font-size:29px;font-weight:700;letter-spacing:-.022em;text-wrap:balance}
+  .title span{color:var(--accent)}
+  .subtitle{margin:6px 0 0;font-size:14px;color:var(--ink-soft)}
+  .meta{font-size:12px;color:var(--ink-faint);text-align:right;line-height:1.55}
+
+  .cross{
+    margin:20px 0 24px;
+    display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;
+    background:var(--panel);border:1px solid var(--line);border-radius:11px;
+    padding:15px 18px;
+  }
+  .cross-label{
+    font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);line-height:1.5;
+    padding-right:18px;border-right:1px solid var(--line);
+  }
+  .cross-items{display:flex;flex-wrap:wrap;gap:9px 10px}
+  .chip{
+    display:inline-flex;align-items:baseline;gap:7px;
+    background:var(--card);border:1px solid var(--line);border-radius:999px;
+    padding:6px 14px 6px 11px;font-size:13px;
+  }
+  .chip b{color:var(--accent);font-weight:700;font-size:11.5px}
+  .chip i{font-style:normal;color:var(--ink-faint);font-size:11.5px}
+
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:12px 14px 13px;
+    display:flex;flex-direction:column;gap:4px;min-height:100px;
+  }
+  .card.hl{background:var(--accent-wash);border-color:var(--accent-line)}
+  .num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.05em}
+  .name{font-size:15px;font-weight:650;line-height:1.25;letter-spacing:-.012em;text-wrap:balance}
+  .note{font-size:12.3px;color:var(--ink-soft);line-height:1.35}
+  .owner{margin-top:auto;padding-top:7px;font-size:11.5px;font-weight:600;color:var(--amber)}
+  .owner::before{content:"● ";font-size:9px;vertical-align:1.5px}
+
+  /* ── комментарии коллег ──────────────────── */
+  .comments{
+    margin-top:26px;padding-top:20px;
+    border-top:1px solid var(--line);
+  }
+  .comments-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;margin-bottom:14px;
+  }
+  .comments-title{
+    margin:0;font-size:13px;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--accent);
+  }
+  .comments-by{font-size:12px;color:var(--ink-faint)}
+  .comments-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .cmt{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:12px 14px 13px;display:flex;flex-direction:column;gap:9px;
+  }
+  .cmt-on{
+    font-size:11.5px;color:var(--ink-faint);
+    padding-bottom:8px;border-bottom:1px solid var(--line);
+  }
+  .cmt-on b{color:var(--ink);font-weight:650;font-size:12.5px}
+  .cmt ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+  .cmt li{
+    font-size:12.5px;line-height:1.4;color:var(--ink);
+    display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:baseline;
+  }
+  .tag{
+    font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    padding:2px 6px;border-radius:4px;white-space:nowrap;
+  }
+  .tag.todo{background:var(--accent);color:var(--ground)}
+  .tag.ask{background:transparent;color:var(--amber);border:1px solid currentColor}
+
+  .foot{
+    margin-top:22px;padding-top:12px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+    font-size:11.5px;color:var(--ink-faint);
+  }
+
+  @media (max-width:1000px){
+    .grid{grid-template-columns:repeat(3,1fr)}
+    .comments-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:760px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .cross{grid-template-columns:1fr;gap:12px}
+    .cross-label{border-right:0;border-bottom:1px solid var(--line);padding:0 0 9px}
+    .meta{text-align:left}
+  }
+  @media (max-width:460px){
+    .grid,.comments-grid{grid-template-columns:1fr}
+  }
+
+  @media print{
+    @page{size:A4 landscape;margin:9mm}
+    body{background:#fff;color:#000;font-size:11px}
+    .sheet{padding:0;max-width:none}
+    .title{font-size:21px}
+    .card{min-height:0;padding:8px 10px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .name{font-size:12px}.note{font-size:10px}
+  }
+</style>
+
+<div class="sheet">
+
+  <header class="head">
+    <div>
+      <h1 class="title">План <span>16 пунктов</span></h1>
+      <p class="subtitle">Направления работы группы компаний ВИТАПРОМ</p>
+    </div>
+    <div class="meta">
+      7 августа 2026
+    </div>
+  </header>
+
+  <section class="cross">
+    <div class="cross-label">Сквозное<br>для всех<br>направлений</div>
+    <div class="cross-items">
+      <span class="chip"><b>24/7</b> онлайн — ответы на запросы клиентов круглосуточно</span>
+      <span class="chip">производство под заказ</span>
+      <span class="chip">3D-модели для ЗИП <i>— запчасти, которых нет в продаже</i></span>
+      <span class="chip">склады конкурентов <i>— показывать наличие на своих сайтах</i></span>
+      <span class="chip">мастер-класс <i>— по ИИ</i></span>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="num">01</div>
+      <div class="name">Сайт</div>
+      <div class="note">shop.vitaprom.ru</div>
+    </div>
+
+    <div class="card">
+      <div class="num">02</div>
+      <div class="name">Разные сайты</div>
+      <div class="note">~200 сайтов группы компаний</div>
+    </div>
+
+    <div class="card hl">
+      <div class="num">03</div>
+      <div class="name">Мессенджеры</div>
+      <div class="note">Привязаны к телефонам компании, указаны на сайтах</div>
+      <div class="owner">Неясов</div>
+    </div>
+
+    <div class="card hl">
+      <div class="num">04</div>
+      <div class="name">SMM — социальные сети</div>
+      <div class="note">Так же, как мессенджеры: привязаны к телефонам компании</div>
+      <div class="owner">Второв</div>
+    </div>
+
+    <div class="card">
+      <div class="num">05</div>
+      <div class="name">Почты</div>
+      <div class="note">Старые базы. Сводная аналитика — в базу данных сайта</div>
+    </div>
+
+    <div class="card hl">
+      <div class="num">06</div>
+      <div class="name">Телефоны</div>
+      <div class="owner">Орлов (пока)</div>
+    </div>
+
+    <div class="card">
+      <div class="num">07</div>
+      <div class="name">Искусственный интеллект</div>
+    </div>
+
+    <div class="card hl">
+      <div class="num">08</div>
+      <div class="name">Производство электродов</div>
+      <div class="note">zapal.su</div>
+      <div class="owner">ИП Родионов</div>
+    </div>
+
+    <div class="card">
+      <div class="num">09</div>
+      <div class="name">Производство 3D</div>
+    </div>
+
+    <div class="card">
+      <div class="num">10</div>
+      <div class="name">Маркетплейсы</div>
+    </div>
+
+    <div class="card hl">
+      <div class="num">11</div>
+      <div class="name">Сервис-центр</div>
+      <div class="owner">ИП Брыкин</div>
+    </div>
+
+    <div class="card">
+      <div class="num">12</div>
+      <div class="name">Сайты на Битриксе</div>
+      <div class="note">7 сайтов</div>
+    </div>
+
+    <div class="card">
+      <div class="num">13</div>
+      <div class="name">OEM</div>
+      <div class="note">Поставки производителям котлов и горелок</div>
+    </div>
+
+    <div class="card">
+      <div class="num">14</div>
+      <div class="name">Сервисные инженеры</div>
+    </div>
+
+    <div class="card">
+      <div class="num">15</div>
+      <div class="name">Розница — Руза</div>
+    </div>
+
+    <div class="card">
+      <div class="num">16</div>
+      <div class="name">ДГУ + ИБП</div>
+      <div class="note">Решения на основе источников бесперебойного питания</div>
+    </div>
+  </section>
+
+  <section class="comments">
+    <div class="comments-head">
+      <h2 class="comments-title">Комментарии к обсуждению</h2>
+      <div class="comments-by">Алексей Пилипенко · 7 августа</div>
+    </div>
+
+    <div class="comments-grid">
+
+      <div class="cmt">
+        <div class="cmt-on">06 · <b>Телефоны</b></div>
+        <ul>
+          <li><span class="tag todo">сделать</span><span>Разграничить номера: телефон отдела продаж не должен попадать к сотрудникам склада</span></li>
+          <li><span class="tag todo">сделать</span><span>Сократить число аппаратов на человека — у Пилипенко сейчас два, цель — один</span></li>
+        </ul>
+      </div>
+
+      <div class="cmt">
+        <div class="cmt-on">08 · <b>Производство электродов</b></div>
+        <ul>
+          <li><span class="tag todo">сделать</span><span>Выкладывать на сайт прайсы поставщиков: например, из прайса Kromschröder — электроды, кабели, колпачки, наконечники, изоляторы</span></li>
+          <li><span class="tag ask">уточнить</span><span>Что понимается под «производством электродов»</span></li>
+        </ul>
+      </div>
+
+      <div class="cmt">
+        <div class="cmt-on">11 · <b>Сервис-центр</b></div>
+        <ul>
+          <li><span class="tag todo">сделать</span><span>Назначить человека, принимающего звонки по сервису, и определить, куда переадресовывать такие запросы</span></li>
+        </ul>
+      </div>
+
+      <div class="cmt">
+        <div class="cmt-on">12 · <b>Сайты на Битриксе</b></div>
+        <ul>
+          <li><span class="tag ask">уточнить</span><span>Что имеется в виду — нужны примеры</span></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div>16 направлений · 5 сквозных принципов · 4 пункта с комментариями</div>
+    <div>ВИТАПРОМ</div>
+  </footer>
+
+</div>
+</body>
+</html>
